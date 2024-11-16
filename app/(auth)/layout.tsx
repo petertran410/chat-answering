@@ -2,7 +2,7 @@ import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex justify-center min-h-screen items-center w-full">
+    <main className="flex min-h-screen w-full items-center justify-center">
       {children}
     </main>
   );
