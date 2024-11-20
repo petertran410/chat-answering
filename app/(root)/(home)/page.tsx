@@ -21,8 +21,8 @@ const questions = [
       name: "John Doe",
       picture: "https://example.com/johndoe.jpg",
     },
-    upvotes: "10",
-    views: "100",
+    upvotes: 50000,
+    views: 1000,
     answers: [
       {
         _id: "1",
@@ -44,8 +44,8 @@ const questions = [
       name: "Jane Smith",
       picture: "https://example.com/janesmith.jpg",
     },
-    upvotes: "25",
-    views: "300",
+    upvotes: 25,
+    views: 300,
     answers: [
       {
         _id: "3",
@@ -56,7 +56,7 @@ const questions = [
         content: "Avoid passing unnecessary props to child components.",
       },
     ],
-    createdAt: new Date("2024-11-18T10:30:00.000Z"),
+    createdAt: new Date("2021-10-04T10:30:00.000Z"),
   },
 ];
 
