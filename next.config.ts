@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig = {
+  experimental: {
+    serverActions: true,
+    mdxRs: true,
+    serverComponentsExternalPackages: ["mongoose"],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
+// export default nextConfig;
