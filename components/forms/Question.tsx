@@ -22,12 +22,19 @@ import { QuestionsSchema } from "@/lib/validations";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter, usePathname } from "next/navigation";
 
 const type: any = "create";
 
-const Question = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionsSchema>>({
@@ -47,7 +54,16 @@ const Question = () => {
       // make an async call to your api => create a question
       // contain all form data
 
-      await createQuestion({});
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: "",
+      });
+
+      // Navigate to home page
+      router.push("/");
     } catch (error) {
     } finally {
       setIsSubmitting(false);
@@ -182,13 +198,13 @@ const Question = () => {
                 Tags <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
+                {/* No props passed to Fragment */}
                 <>
                   <Input
                     className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                     placeholder="Add tags..."
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
-
                   {field.value.length > 0 && (
                     <div className="flex-start mt-2.5 gap-2.5">
                       {field.value.map((tag: any) => (
@@ -197,7 +213,6 @@ const Question = () => {
                           className="subtle-medium background-light800_dark300 text-light400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize"
                           onClick={() => handleTagRemove(tag, field)}>
                           {tag}
-
                           <Image
                             src="/assets/icons/close.svg"
                             alt="Close icon"
@@ -219,6 +234,7 @@ const Question = () => {
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           className="primary-gradient w-fit !text-light-900"
