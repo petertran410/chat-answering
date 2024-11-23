@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRef, useState } from "react";
+
 import { Editor } from "@tinymce/tinymce-react";
 
 import { Button } from "@/components/ui/button";
@@ -58,8 +58,8 @@ const Question = ({ mongoUserId }: Props) => {
         title: values.title,
         content: values.explanation,
         tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: "",
+        author: mongoUserId,
+        path: pathname,
       });
 
       // Navigate to home page
@@ -125,7 +125,7 @@ const Question = ({ mongoUserId }: Props) => {
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Be specific and imagine you're asking a question to another
+                Be specific and imagine you&apos;re asking a question to another
                 person
               </FormDescription>
               <FormMessage className="text-red-500" />

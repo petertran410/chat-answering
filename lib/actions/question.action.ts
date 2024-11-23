@@ -10,8 +10,9 @@ export const getQuestion = async (params: GetQuestionsParams) => {
   try {
     connectToDatabase();
     const questions = await Question.find({})
-      .populate({ path: "tags", model: Tag })
-      .populate({ path: "author", model: User });
+      .populate({ path: "tags", model: Tag, select: "name" }) // Only fetch the "name" field
+      .populate({ path: "author", model: User, select: "username" }) // Only fetch the "username"
+      .sort({ createdAt: -1 });
 
     return { questions };
   } catch (error) {
@@ -21,7 +22,6 @@ export const getQuestion = async (params: GetQuestionsParams) => {
 };
 
 export const createQuestion = async (param: CreateQuestionParams) => {
-  // eslint-disable-next-line np-empty
   try {
     connectToDatabase();
 
