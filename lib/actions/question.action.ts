@@ -6,29 +6,6 @@ import { connectToDatabase } from "../mongoose";
 import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 
-// export const getQuestions = async (params: GetQuestionsParams) => {
-//   try {
-//     await connectToDatabase();
-//     const questions = await Question.find({})
-//       .populate({ path: "tags", model: Tag, select: "name" })
-//       .populate({ path: "author", model: User, select: "name" })
-//       .sort({ createdAt: -1 })
-//       .lean(); // Convert Mongoose documents to plain JavaScript objects
-
-//     // Serialize Date objects and remove any potential circular references
-//     const serializedQuestions = questions.map((question) => ({
-//       ...question,
-//       createdAt: question.createdAt.toISOString(), // Convert Date to string
-//       // Ensure any nested objects do not contain circular references
-//     }));
-
-//     return { questions: serializedQuestions };
-//   } catch (error) {
-//     console.log("Error ...", error);
-//     throw error;
-//   }
-// };
-
 export const getQuestions = async (params: GetQuestionsParams) => {
   try {
     await connectToDatabase();
