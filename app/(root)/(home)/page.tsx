@@ -35,7 +35,7 @@ const questions = [
 ];
 
 const Home = async () => {
-  const result = await getQuestions({});
+  // const result = await getQuestions({});
 
   return (
     <>
