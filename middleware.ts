@@ -4,11 +4,13 @@ const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/"]);
 
 // const isPublicRoute = createRouteMatcher(["/(.*)"]);
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
+export default clerkMiddleware(
+  async (auth: { protect: () => any }, request: any) => {
+    if (!isPublicRoute(request)) {
+      await auth.protect();
+    }
   }
-});
+);
 
 export const config = {
   matcher: [

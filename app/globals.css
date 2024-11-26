@@ -4,6 +4,10 @@
 
 @import url("../styles/theme.css");
 
+nextjs-portal {
+  display: none;
+}
+
 body {
   font-family: "Inter", sans-serif;
 }

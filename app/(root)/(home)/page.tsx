@@ -5,8 +5,8 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
-import React from "react";
 
 const questions = [
   {
@@ -32,35 +32,11 @@ const questions = [
     ],
     createdAt: new Date("2024-11-19T12:00:00.000Z"),
   },
-  {
-    _id: "2",
-    title: "How to optimize React app performance?",
-    tags: [
-      { _id: "3", name: "react" },
-      { _id: "4", name: "performance" },
-    ],
-    author: {
-      _id: "2",
-      name: "Jane Smith",
-      picture: "https://example.com/janesmith.jpg",
-    },
-    upvotes: 25,
-    views: 300,
-    answers: [
-      {
-        _id: "3",
-        content: "Use memoization techniques like `React.memo` and `useMemo`.",
-      },
-      {
-        _id: "4",
-        content: "Avoid passing unnecessary props to child components.",
-      },
-    ],
-    createdAt: new Date("2021-10-04T10:30:00.000Z"),
-  },
 ];
 
-const Home = () => {
+const Home = async () => {
+  const result = await getQuestions({});
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -89,21 +65,23 @@ const Home = () => {
 
       <HomeFilters />
 
-      <div className="mt-10 flex flex-col w-full gap-6">
+      <div className="mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (
-          questions.map((question) => (
-            <QuestionCard
-              key={question._id}
-              _id={question._id}
-              title={question.title}
-              tags={question.tags}
-              author={question.author}
-              upvotes={question.upvotes}
-              views={question.views}
-              answers={question.answers}
-              createdAt={question.createdAt}
-            />
-          ))
+          questions.map((question) => {
+            return (
+              <QuestionCard
+                key={question._id}
+                _id={question._id}
+                title={question.title}
+                tags={question.tags}
+                author={question.author}
+                upvotes={question.upvotes}
+                views={question.views}
+                answers={question.answers}
+                createdAt={question.createdAt}
+              />
+            );
+          })
         ) : (
           <NoResult
             title="There's no question to show"
