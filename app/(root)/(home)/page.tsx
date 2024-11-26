@@ -2,45 +2,58 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import {
+  getQuestions,
+  getRecommendedQuestions,
+} from "@/lib/actions/question.action";
+import { SearchParamsProps } from "@/types";
 import Link from "next/link";
 
-const questions = [
-  {
-    _id: "1",
-    title: "Cascading Deletes in SQLAlchemy?",
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "sqlalchemy" },
-    ],
-    author: {
-      _id: "1",
-      name: "John Doe",
-      picture: "https://example.com/johndoe.jpg",
-    },
-    upvotes: 50000,
-    views: 1000,
-    answers: [
-      {
-        _id: "1",
-        content: "Ensure cascading deletes are configured in relationships.",
-      },
-      { _id: "2", content: "Use `delete-orphan` for dependent objects." },
-    ],
-    createdAt: new Date("2024-11-19T12:00:00.000Z"),
-  },
-];
+import type { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
 
-const Home = async () => {
+export const metadata: Metadata = {
+  title: "Home | Dev Overflow",
+  description:
+    "Dev Overflow is a community of developers, where you can ask questions, share your knowledge and learn from others. Join us and be a part of the community.",
+};
+
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const { userId }: any = auth();
+  let result: any;
+  if (searchParams?.filter === "recommended") {
+    if (userId) {
+      result = await getRecommendedQuestions({
+        userId,
+        searchQuery: searchParams.q,
+        page: searchParams.page ? +searchParams.page : 1,
+      });
+    } else {
+      result = {
+        questions: [],
+        isNext: false,
+      };
+    }
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+    });
+  }
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
+
         <Link href="/ask-question" className="flex justify-end max-sm:w-full">
           <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
-            Ask a questions
+            Ask a question
           </Button>
         </Link>
       </div>
@@ -51,7 +64,7 @@ const Home = async () => {
           iconPosition="left"
           imgSrc="/assets/icons/search.svg"
           placeholder="Search for questions"
-          otherClasses="flex"
+          otherClasses="flex-1"
         />
         <Filter
           filters={HomePageFilters}
@@ -59,37 +72,39 @@ const Home = async () => {
           containerClasses="hidden max-md:flex"
         />
       </div>
-
       <HomeFilters />
-
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => {
-            return (
-              <QuestionCard
-                key={question._id}
-                _id={question._id}
-                title={question.title}
-                tags={question.tags}
-                author={question.author}
-                upvotes={question.upvotes}
-                views={question.views}
-                answers={question.answers}
-                createdAt={question.createdAt}
-              />
-            );
-          })
+        {result.questions.length > 0 ? (
+          result.questions.map((question: any) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
         ) : (
           <NoResult
             title="There's no question to show"
-            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing learn from. Get involved! 💡"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the
+          discussion. our query could be the next big thing others learn from. Get
+          involved! 💡"
             link="/ask-question"
             linkTitle="Ask a Question"
           />
         )}
       </div>
+      <div className="mt-10">
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
+      </div>
     </>
   );
-};
-
-export default Home;
+}

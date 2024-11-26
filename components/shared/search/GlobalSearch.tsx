@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { Input } from "@/components/ui/input";
 
 export const GlobalSearch = () => {
@@ -16,7 +16,7 @@ export const GlobalSearch = () => {
         <Input
           type="text"
           placeholder="Search globally"
-          className="paragraph-regular pl-12 no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
+          className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none pl-12 shadow-none outline-none"
         />
       </div>
     </div>

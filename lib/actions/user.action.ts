@@ -69,6 +69,7 @@ export const deleteUser = async (params: DeleteUserParams) => {
 
     // Delete everything from user: questions, answers, comments, etc
 
+    // eslint-disable-next-line no-unused-vars
     const userQuestionIds = await Question.find({ author: user._id }).distinct(
       "_id"
     );
