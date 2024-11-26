@@ -8,34 +8,34 @@ import { HomePageFilters } from "@/constants/filters";
 import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-// const questions = [
-//   {
-//     _id: "1",
-//     title: "Cascading Deletes in SQLAlchemy?",
-//     tags: [
-//       { _id: "1", name: "python" },
-//       { _id: "2", name: "sqlalchemy" },
-//     ],
-//     author: {
-//       _id: "1",
-//       name: "John Doe",
-//       picture: "https://example.com/johndoe.jpg",
-//     },
-//     upvotes: 50000,
-//     views: 1000,
-//     answers: [
-//       {
-//         _id: "1",
-//         content: "Ensure cascading deletes are configured in relationships.",
-//       },
-//       { _id: "2", content: "Use `delete-orphan` for dependent objects." },
-//     ],
-//     createdAt: new Date("2024-11-19T12:00:00.000Z"),
-//   },
-// ];
+const questions = [
+  {
+    _id: "1",
+    title: "Cascading Deletes in SQLAlchemy?",
+    tags: [
+      { _id: "1", name: "python" },
+      { _id: "2", name: "sqlalchemy" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      picture: "https://example.com/johndoe.jpg",
+    },
+    upvotes: 50000,
+    views: 1000,
+    answers: [
+      {
+        _id: "1",
+        content: "Ensure cascading deletes are configured in relationships.",
+      },
+      { _id: "2", content: "Use `delete-orphan` for dependent objects." },
+    ],
+    createdAt: new Date("2024-11-19T12:00:00.000Z"),
+  },
+];
 
 const Home = async () => {
-  const result = await getQuestions({});
+  // const result = await getQuestions({});
 
   return (
     <>
@@ -66,8 +66,8 @@ const Home = async () => {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ? (
-          result.questions.map((question) => {
+        {questions.length > 0 ? (
+          questions.map((question) => {
             return (
               <QuestionCard
                 key={question._id}
