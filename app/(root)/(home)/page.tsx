@@ -22,6 +22,32 @@ export const metadata: Metadata = {
     "Dev Overflow is a community of developers, where you can ask questions, share your knowledge and learn from others. Join us and be a part of the community.",
 };
 
+const questions = [
+  {
+    _id: "1",
+    title: "Cascading Deletes in SQLAlchemy?",
+    tags: [
+      { _id: "1", name: "python" },
+      { _id: "2", name: "sqlalchemy" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      picture: "https://example.com/johndoe.jpg",
+    },
+    upvotes: 50000,
+    views: 1000,
+    answers: [
+      {
+        _id: "1",
+        content: "Ensure cascading deletes are configured in relationships.",
+      },
+      { _id: "2", content: "Use `delete-orphan` for dependent objects." },
+    ],
+    createdAt: new Date("2024-11-19T12:00:00.000Z"),
+  },
+];
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId }: any = auth();
   let result: any;
@@ -74,8 +100,8 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       </div>
       <HomeFilters />
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ? (
-          result.questions.map((question: any) => (
+        {questions.length > 0 ? (
+          questions.map((question: any) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
